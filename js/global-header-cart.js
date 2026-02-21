@@ -3,6 +3,21 @@ import { getUser } from "./auth.js";
 import { isAdmin } from "./rbac.js";
 
 function ensureCartBtn(){
+  const existing = document.getElementById('btnCart') || document.querySelector('.iconBtn[aria-label*="Carrinho"], .iconbtn[aria-label*="Carrinho"]');
+  if (existing) {
+    if (!existing.id) existing.id = 'btnCart';
+    let badge = existing.querySelector('#globalCartBadge, #cartCount, .cartBadge');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.id = 'globalCartBadge';
+      badge.className = 'cartBadge';
+      existing.appendChild(badge);
+    }
+    const c = getCount();
+    badge.textContent = String(c);
+    badge.hidden = c <= 0;
+    return;
+  }
   const right = document.querySelector('.head-actions, .actions, .right');
   if(!right) return;
   let btn = document.getElementById('globalCartBtn');
@@ -12,7 +27,7 @@ function ensureCartBtn(){
     btn.className = 'iconBtn';
     btn.href = './cart.html';
     btn.setAttribute('aria-label','Carrinho');
-    btn.innerHTML = '<span class="material-symbols-rounded">shopping_cart</span><span class="cartBadge" id="globalCartBadge">0</span>';
+    btn.innerHTML = `${cartIconSvg()}<span class="cartBadge" id="globalCartBadge">0</span>`;
     right.appendChild(btn);
   }
   const badge = btn.querySelector('#globalCartBadge');
@@ -24,6 +39,7 @@ function ensureCartBtn(){
 }
 
 export async function enhanceHeader(){
+  normalizeHeaderIcons();
   ensureCartBtn();
   if(!window.__csCartHeaderBound){
     window.__csCartHeaderBound = true;
@@ -59,6 +75,7 @@ export async function enhanceHeader(){
 }
 
 export function wireHeaderInteractions(){
+  normalizeHeaderIcons();
   const btnMenu = document.getElementById('btnMenu');
   const menu = document.getElementById('sideMenu');
   const btnClose = document.getElementById('menuClose');
@@ -93,3 +110,23 @@ function cartIconSvg(){
   return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="20" cy="20" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
 }
 
+
+
+function normalizeHeaderIcons(){
+  const themeBtn = document.getElementById('themeBtn') || document.getElementById('btnTheme');
+  const menuBtn = document.getElementById('btnMenu');
+  const userLink = document.querySelector('a.iconBtn[href*="member.html"], a.iconbtn[href*="member.html"]');
+  const cartLink = document.getElementById('btnCart') || document.querySelector('.iconBtn[aria-label*="Carrinho"], .iconbtn[aria-label*="Carrinho"]');
+
+  if (themeBtn && !themeBtn.querySelector('svg')) themeBtn.textContent = '☾';
+  if (menuBtn && !menuBtn.querySelector('svg')) menuBtn.innerHTML = menuIconSvg();
+  if (userLink && !userLink.querySelector('svg')) userLink.innerHTML = userIconSvg();
+  if (cartLink) {
+    const badge = cartLink.querySelector('#cartCount, #globalCartBadge, .cartBadge');
+    if (!cartLink.querySelector('svg')) {
+      cartLink.textContent = '';
+      cartLink.insertAdjacentHTML('afterbegin', cartIconSvg());
+      if (badge) cartLink.appendChild(badge);
+    }
+  }
+}
