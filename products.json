@@ -4,20 +4,20 @@
     "name": "Grupo VIP",
     "description": "Acesso ao grupo VIP com aprovação manual.",
     "price": 49.9,
-    "image": "./assets/img/vip.jpg"
+    "image": "./assets/img/product-vip.jpg"
   },
   {
     "id": "lojista",
     "name": "Lojistas",
     "description": "Lista principal para revenda e loja.",
     "price": 30.0,
-    "image": "./assets/img/lojista.jpg"
+    "image": "./assets/img/product-lojista.jpg"
   },
   {
     "id": "final",
     "name": "Consumidor Final",
     "description": "Lista selecionada para compra pessoal.",
     "price": 30.0,
-    "image": "./assets/img/final.jpg"
+    "image": "./assets/img/product-final.jpg"
   }
 ]
