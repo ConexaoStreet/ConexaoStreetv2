@@ -12,3 +12,14 @@ export function applyTheme(theme){
 }
 export function initTheme(){ let t='dark'; try{ t = localStorage.getItem(KEY) || 'dark'; }catch{} return applyTheme(t); }
 export function cycleTheme(){ const cur = document.documentElement.getAttribute('data-theme') || 'dark'; const i = THEMES.indexOf(cur); return applyTheme(THEMES[(i+1)%THEMES.length]); }
+
+
+// Compat aliases (legacy pages)
+export function applySavedTheme(){ return initTheme(); }
+export function toggleTheme(){ return cycleTheme(); }
+export function applyGoldMode(enabled){
+  if(enabled) return applyTheme('gold');
+  const cur = (document.documentElement.getAttribute('data-theme') || '').toLowerCase();
+  if(cur === 'gold') return applyTheme('dark');
+  return initTheme();
+}
