@@ -1,4 +1,4 @@
-import { getSessionUser } from '../supabaseClient.js';
+import { getSessionUser, supa } from '../supabaseClient.js';
 import { listOrders } from '../api.js';
 import { CONFIG } from '../config.js';
 import { isAdmin } from '../rbac.js';
@@ -10,9 +10,9 @@ function esc(v){ return String(v ?? '').replace(/[&<>\"']/g, m => ({'&':'&amp;',
 function money(v){ return (Number(v)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
 
 function setHeaderIcons(){
-  const themeBtn = $('themeBtn');
+  const themeBtn = $('themeBtn') || $('btnTheme');
   const menuBtn = $('btnMenu');
-  const userLink = document.querySelector('a.iconBtn[href*="member.html"]');
+  const userLink = document.querySelector('a.iconBtn[href*="member.html"], a.iconbtn[href*="member.html"]');
   if(themeBtn && !themeBtn.dataset.iconFixed){ themeBtn.textContent = '☾'; themeBtn.dataset.iconFixed='1'; }
   if(menuBtn && !menuBtn.dataset.iconFixed){
     menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>';
@@ -123,7 +123,7 @@ function renderMember(user, orders, approved){
 async function listApprovalsForUser(user){
   try{
     const mod = await import('../supabaseClient.js');
-    const sb = mod.supabase;
+    const sb = mod.supa ? mod.supa() : (mod.supabase || supa());
     const keys = [user?.id, user?.email].filter(Boolean).map(String);
     if(!keys.length) return [];
     let out=[];
@@ -157,7 +157,7 @@ async function boot(){
     ]);
 
     const isVipApproved = approvals.some(a => String(a.product_id||a.product_name||'').toLowerCase().includes('vip'));
-    applyGoldMode(Boolean(isVipApproved || (await isAdmin(user.id))));
+    if (typeof applyGoldMode === 'function') applyGoldMode(Boolean(isVipApproved || (await isAdmin(user.id))));
     setHeaderIcons();
     renderMember(user, orders, approvals);
   }catch(err){
