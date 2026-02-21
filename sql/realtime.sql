@@ -1,0 +1,3 @@
+-- Enable realtime in dashboard for:
+-- cs_quality_posts
+-- cs_notifications

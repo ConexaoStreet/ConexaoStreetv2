@@ -1,0 +1,147 @@
+    <!doctype html>
+    <html lang="pt-br">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Perfil • Conexão Street v2</title>
+      <link rel="stylesheet" href="./styles.css" />
+      <link rel="icon" href="./assets/img/favicon.png" />
+      <meta name="theme-color" content="#07070A" />
+      <meta property="og:image" content="./assets/img/og.jpg" />
+    </head>
+    <body>
+      <div class="toastWrap" id="toastWrap"></div>
+
+      <header class="topbar">
+        <div class="wrap in">
+          <a class="brand" href="./index.html" aria-label="Conexão Street">
+            <span class="brandMark"><img src="./assets/img/logo-mark.svg" alt=""></span>
+            <span class="brandTxt"><b>Conexão Street</b><small>v2</small></span>
+          </a>
+
+          <nav class="actions" aria-label="Ações">
+            <button class="iconBtn" id="themeBtn" aria-label="Alternar tema">☾</button>
+            <a class="iconBtn" href="./member.html" aria-label="Conta"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg></a>
+            <button class="iconBtn primary" id="btnMenu" aria-label="Menu"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
+          </nav>
+        </div>
+      </header>
+
+      <main class="wrap">
+    <section class="section">
+  <div class="sep"><span class="l"></span><span class="t">PERFIL</span><span class="l"></span></div>
+
+  <div id="loggedOut" class="card hidden">
+    <b>Entrar</b>
+    <div class="p">Entre para editar seu perfil.</div>
+    <label class="label">E-mail</label>
+    <input class="input" id="email" placeholder="seuemail@gmail.com" />
+    <div class="ctaRow" style="margin-top:12px;">
+      <button class="btn primary" id="loginBtn">Enviar link</button>
+    </div>
+  </div>
+
+  <div id="loggedIn" class="hidden">
+    <div class="card">
+      <b>Conta</b>
+      <div class="p">E-mail: <span id="meEmail"></span></div>
+      <label class="label">Nome</label>
+      <input class="input" id="name" placeholder="Seu nome" />
+      <div class="ctaRow" style="margin-top:12px;">
+        <button class="btn primary" id="saveBtn">Salvar</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <b>Avatar</b>
+      <div class="p">Envie uma foto de perfil (opcional).</div>
+      <input class="input" id="avatar" type="file" accept="image/*" />
+      <div class="ctaRow" style="margin-top:12px;">
+        <button class="btn primary" id="uploadBtn">Enviar avatar</button>
+      </div>
+    </div>
+  </div>
+</section>
+      </main>
+
+      <div class="fabWrap">
+        <button class="fab" id="fabBtn" aria-label="Suporte">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor"><path d="M19.11 17.53c-.27-.14-1.61-.79-1.86-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.35-.8-.71-1.34-1.59-1.5-1.86-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.44-.46-.61-.47h-.52c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.26 0 1.33.97 2.61 1.11 2.79.14.18 1.9 2.9 4.6 4.07.64.28 1.14.45 1.53.58.64.2 1.22.17 1.68.1.51-.08 1.61-.66 1.84-1.3.23-.64.23-1.18.16-1.3-.07-.11-.25-.18-.52-.32z"/><path d="M26.67 5.33A13.21 13.21 0 0016.02 0C8.75 0 2.86 5.9 2.86 13.17c0 2.32.61 4.58 1.77 6.57L2 30.67l11.19-2.94a13.14 13.14 0 006.29 1.6h.01c7.27 0 13.17-5.9 13.17-13.17 0-3.52-1.37-6.83-3.99-9.83zM16.02 27.1h-.01a10.9 10.9 0 01-5.56-1.52l-.4-.24-6.64 1.74 1.77-6.47-.26-.42a10.86 10.86 0 01-1.66-5.82c0-6.02 4.9-10.92 10.92-10.92 2.91 0 5.64 1.13 7.7 3.2 2.05 2.06 3.18 4.79 3.18 7.7 0 6.02-4.9 10.92-10.92 10.92z"/></svg>
+        </button>
+        <div class="fabMenu" id="fabMenu" aria-hidden="true">
+          <a class="fabItem" id="fabSupport" target="_blank" rel="noopener">Contato suporte</a>
+          <a class="fabItem" id="fabGroup" target="_blank" rel="noopener">Grupo de dúvidas</a>
+        </div>
+      </div>
+
+      <div class="menuOverlay" id="menuOverlay" aria-hidden="true">
+        <div class="menu">
+          <a href="./member.html">Área do Membro</a>
+          <a href="./products.html">Planos / Fornecedores</a>
+          <a href="./quality.html">Qualidade Fornecedores</a>
+          <a href="./rules.html">Regras / Segurança</a>
+          <a href="./support.html">Suporte</a>
+          <div id="adminBox" style="display:none;">
+            <hr />
+            <a href="./admin.html#payments">Admin Dashboard</a>
+            <a href="./admin.html#payments">Pagamentos</a>
+            <a href="./admin.html#approvals">Aprovações</a>
+            <a href="./admin.html#quality">Qualidade</a>
+          </div>
+          <hr />
+          <button id="menuClose">Fechar</button>
+        </div>
+      </div>
+
+      <div class="modalBack" id="modalBack" aria-hidden="true">
+        <div class="modal" id="modalBox">
+          <div class="modalHead">
+            <div class="modalTitle" id="modalTitle">Detalhes</div>
+            <button class="xBtn" id="modalClose" aria-label="Fechar">✕</button>
+          </div>
+          <div id="modalBody" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <script type="module" src="./js/pages/profile.page.js"></script>
+      <script type="module">
+        import { CONFIG } from "./js/config.js";
+        import { getUser } from "./js/supabaseClient.js";
+  import { enhanceHeader } from "./js/global-header-cart.js";
+        import { isAdmin } from "./js/rbac.js";
+
+        const fab = document.getElementById("fabBtn");
+        const fabMenu = document.getElementById("fabMenu");
+        const supp = document.getElementById("fabSupport");
+        const grp = document.getElementById("fabGroup");
+        if(supp) supp.href = CONFIG.WHATSAPP_WA + "?text=" + encodeURIComponent("Oi Conexão Street! Preciso de suporte.");
+        if(grp) grp.href = CONFIG.GROUP_LINK;
+
+        if(fab && fabMenu){
+          fab.addEventListener("click",(e)=>{ e.preventDefault(); fabMenu.classList.toggle("on"); });
+          document.addEventListener("click",(e)=>{ if(e.target===fab || fab.contains(e.target) || fabMenu.contains(e.target)) return; fabMenu.classList.remove("on"); });
+        }
+
+        const btnMenu = document.getElementById("btnMenu");
+        const overlay = document.getElementById("menuOverlay");
+        const closeBtn = document.getElementById("menuClose");
+        const openMenu = ()=>{ overlay.classList.add("on"); overlay.setAttribute("aria-hidden","false"); document.documentElement.style.overflow="hidden"; };
+        const closeMenu = ()=>{ overlay.classList.remove("on"); overlay.setAttribute("aria-hidden","true"); document.documentElement.style.overflow=""; };
+        if(btnMenu && overlay){
+          btnMenu.addEventListener("click",(e)=>{ e.preventDefault(); openMenu(); });
+          overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeMenu(); });
+          if(closeBtn) closeBtn.addEventListener("click", closeMenu);
+          document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeMenu(); });
+        }
+
+        // admin links show/hide
+        try {
+          await enhanceHeader();
+  const u = await getUser();
+          const box = document.getElementById("adminBox");
+          if(u && box) box.style.display = (await isAdmin(u.id)) ? "block" : "none";
+        } catch {}
+      </script>
+    </body>
+    </html>

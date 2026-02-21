@@ -1,0 +1,77 @@
+:root[data-theme="light"]{
+  --bg0:#ffffff;
+  --bg1:#f7f7fb;
+  --bg2:#eef0f8;
+  --card:#ffffff;
+  --text:#0b0b10;
+  --muted:rgba(11,11,16,.70);
+  --muted2:rgba(11,11,16,.55);
+  --stroke:rgba(11,11,16,.10);
+  --shadow: 0 14px 40px rgba(0,0,0,.10);
+  --shadowP: 0 18px 60px rgba(124,58,237,.18);
+}
+:root[data-theme="light"] body{
+  background:
+    radial-gradient(900px 520px at 70% 18%, rgba(124,58,237,.10), transparent 62%),
+    radial-gradient(700px 420px at 18% 0%,  rgba(124,58,237,.06), transparent 58%),
+    linear-gradient(180deg, var(--bg0), var(--bg2) 55%, var(--bg0));
+}
+
+/* Light mode premium (sem estourar branco) */
+:root[data-theme="light"]{
+  --bg0:#f7f7fb;
+  --bg1:#ffffff;
+  --bg2:#eef0f8;
+  --card:#ffffff;
+  --text:#0b0b10;
+  --muted:rgba(11,11,16,.70);
+  --muted2:rgba(11,11,16,.55);
+  --stroke:rgba(11,11,16,.10);
+}
+:root[data-theme="light"] body{
+  background:
+    radial-gradient(900px 520px at 70% 18%, rgba(124,58,237,.10), transparent 62%),
+    radial-gradient(700px 420px at 18% 0%,  rgba(124,58,237,.06), transparent 58%),
+    linear-gradient(180deg, var(--bg1), var(--bg2) 55%, var(--bg1));
+}
+:root[data-theme="light"] .topbar{ border-bottom: 1px solid rgba(11,11,16,.10); }
+:root[data-theme="light"] .iconBtn{
+  border-color: rgba(11,11,16,.12);
+  background: rgba(11,11,16,.04);
+  color: var(--text);
+}
+:root[data-theme="light"] .hero,
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .pCard{
+  border-color: rgba(11,11,16,.10);
+  background: rgba(255,255,255,.72);
+}
+:root[data-theme="light"] .heroGrid{ opacity:.10; }
+:root[data-theme="light"] .heroVig{
+  background:
+    radial-gradient(900px 520px at 70% 35%, rgba(124,58,237,.12), transparent 55%),
+    linear-gradient(to bottom, rgba(255,255,255,.08), rgba(255,255,255,.65));
+}
+:root[data-theme="light"] .btn{
+  border-color: rgba(11,11,16,.14);
+  background: rgba(11,11,16,.04);
+  color: var(--text);
+}
+:root[data-theme="light"] .btn.primary{
+  color: #fff;
+  border-color: rgba(124,58,237,.35);
+}
+:root[data-theme="light"] .menu{
+  background: rgba(255,255,255,.92);
+  border-color: rgba(11,11,16,.14);
+}
+:root[data-theme="light"] .menu a,
+:root[data-theme="light"] .menu button{
+  border-color: rgba(11,11,16,.10);
+  background: rgba(11,11,16,.04);
+  color: var(--text);
+}
+
+
+[data-theme="gold"]{--bg:#0e0901;--panel:#171007;--text:#f9f2de;--muted:#d9c79a;--line:rgba(255,215,102,.18);--primary:#d4a017;--primary-2:#f0c95a}
+[data-theme="gold"] .btn.primary,[data-theme="gold"] .brandBadge{background:linear-gradient(180deg, rgba(240,201,90,.95), rgba(212,160,23,.95));color:#1b1204}

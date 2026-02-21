@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="p" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="none"/>
+  <!-- Minimal shield -->
+  <path d="M512 120
+           C650 160 744 176 840 196
+           V492
+           C840 700 702 826 512 904
+           C322 826 184 700 184 492
+           V196
+           C280 176 374 160 512 120 Z"
+        fill="none" stroke="url(#p)" stroke-width="28" stroke-linejoin="round"/>
+  <!-- Crown (discrete) -->
+  <path d="M390 242 L442 196 L512 252 L582 196 L634 242
+           L610 320 H414 Z"
+        fill="none" stroke="#F5F5F5" stroke-width="18" stroke-linejoin="round"/>
+  <!-- CS monogram (abstract) -->
+  <path d="M640 430
+           C604 382 552 356 492 356
+           C400 356 340 416 340 508
+           C340 600 400 660 492 660
+           C552 660 604 634 640 586"
+        fill="none" stroke="#F5F5F5" stroke-width="44" stroke-linecap="round"/>
+  <path d="M684 432
+           C724 450 748 482 748 512
+           C748 560 690 594 612 612
+           C534 630 476 664 476 712
+           C476 742 500 774 540 792"
+        fill="none" stroke="url(#p)" stroke-width="44" stroke-linecap="round"/>
+</svg>

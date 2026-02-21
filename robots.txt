@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://conexaostreet.github.io/ConexaoStreetv2/sitemap.xml

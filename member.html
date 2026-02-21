@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Área do Membro • Conexão Street</title>
+  <meta name="description" content="Área do Membro da Conexão Street" />
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .cs-wrap{max-width:1100px;margin:0 auto;padding:0 14px;}
+    .sep{display:flex;align-items:center;gap:12px;justify-content:center;margin:18px 0 14px;}
+    .sep::before,.sep::after{content:"";height:2px;flex:1;max-width:210px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.85),transparent);}
+    .sep span{font-weight:800;letter-spacing:.08em}
+    .member-mount{display:grid;gap:14px;padding-bottom:80px}
+    .cardx{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+    .titlex{font-size:1.15rem;font-weight:800;margin:0 0 8px}
+    .mutedx{opacity:.86}
+    .btnrowx{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btnx{appearance:none;border:none;border-radius:16px;padding:12px 16px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.05);color:inherit;border:1px solid rgba(255,255,255,.08)}
+    .btnx.primary{background:linear-gradient(180deg,#7c3aed,#6d28d9);color:#fff;border-color:rgba(255,255,255,.08)}
+    .grid2{display:grid;grid-template-columns:1fr;gap:14px}
+    @media (min-width:780px){ .grid2{grid-template-columns:1fr 1fr;} }
+    .product-card{display:flex;flex-direction:column;overflow:hidden;padding:0}
+    .product-media{aspect-ratio: 16/10;background:#120c1f;border-bottom:1px solid rgba(255,255,255,.08)}
+    .product-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .product-body{padding:16px}
+    .pricex{font-weight:800;margin-top:6px}
+    .tablex{width:100%;border-collapse:collapse;margin-top:8px}
+    .tablex th,.tablex td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left;font-size:.92rem}
+    .topbar{position:sticky;top:0;z-index:30;background:rgba(8,8,14,.75);backdrop-filter: blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .topbar .inner{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;max-width:1100px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+    .brand img{width:38px;height:38px;object-fit:contain}
+    .mini{opacity:.7;font-size:.85rem}
+    .iconbtns{display:flex;gap:8px;align-items:center}
+    .iconbtn{width:44px;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:inherit;display:grid;place-items:center;text-decoration:none}
+    .iconbtn.primary{background:linear-gradient(180deg,#7c3aed,#6d28d9)}
+    .menuOverlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none}
+    .menuOverlay.open{display:block}
+    .menu{position:absolute;right:14px;top:72px;width:min(320px,calc(100vw - 28px));background:#110d1b;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px}
+    .menu a,.menu button{display:flex;width:100%;padding:12px 14px;border-radius:12px;text-decoration:none;color:inherit;background:transparent;border:none;text-align:left}
+    .menu a:hover,.menu button:hover{background:rgba(255,255,255,.04)}
+    .fabWrap{position:fixed;right:14px;bottom:18px;z-index:45}
+    .fabBtn{width:58px;height:58px;border-radius:18px;border:none;background:linear-gradient(180deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 10px 26px rgba(124,58,237,.35)}
+    [data-theme="gold"] .btnx.primary,[data-theme="gold"] .iconbtn.primary,[data-theme="gold"] .fabBtn{background:linear-gradient(180deg,#D4AF37,#B8860B)}
+    [data-theme="gold"] .sep::before,[data-theme="gold"] .sep::after{background:linear-gradient(90deg,transparent,rgba(212,175,55,.9),transparent)}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner">
+      <a class="brand" href="./index.html" aria-label="Conexão Street">
+        <img src="./assets/img/logo-mark.svg" alt="Logo Conexão Street" />
+        <div>
+          <div style="font-weight:800;line-height:1">Conexão Street</div>
+          <div class="mini">v2</div>
+        </div>
+      </a>
+      <div class="iconbtns">
+        <button class="iconbtn" id="btnTheme" type="button" aria-label="Alternar tema">◐</button>
+        <a class="iconbtn" href="./member.html" aria-label="Área do membro">👤</a>
+        <button class="iconbtn primary" id="btnMenu" type="button" aria-label="Abrir menu">☰</button>
+        <a class="iconbtn" href="./cart.html" aria-label="Carrinho"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"/><circle cx="20" cy="20" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cs-wrap">
+    <div class="sep"><span>ÁREA DO MEMBRO</span></div>
+    <section id="memberMount" class="member-mount" aria-live="polite"></section>
+  </main>
+
+  <div class="fabWrap">
+    <button class="fabBtn" id="fabBtn" type="button" aria-label="Suporte">💬</button>
+  </div>
+
+  <div class="menuOverlay" id="menuOverlay" aria-hidden="true">
+    <div class="menu" role="dialog" aria-modal="true" aria-label="Menu">
+      <a href="./member.html">Área do Membro</a>
+      <a href="./products.html">Planos / Fornecedores</a>
+      <a href="./quality.html">Qualidade</a>
+      <a href="./support.html">Suporte</a>
+      <a href="https://wa.me/5583998090154" target="_blank" rel="noopener noreferrer">WhatsApp suporte</a>
+      <button type="button" id="btnLogout">Sair</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./js/config.js"></script>
+  <script type="module" src="./js/pages/member.page.js"></script>
+</body>
+</html>
