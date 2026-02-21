@@ -9,3 +9,10 @@ export function findProduct(catalog, id){
   const k = String(id||"").toLowerCase();
   return catalog.find(p => String(p.id||"").toLowerCase() === k) || null;
 }
+
+
+// Compat alias (legacy checkout page)
+export function getProductById(a, b){
+  if (Array.isArray(a)) return findProduct(a, b);
+  return findProduct(Array.isArray(b) ? b : [], a);
+}
