@@ -1,4 +1,5 @@
 import { getSessionUser, supa } from '../supabaseClient.js';
+import { signInWithEmail, signOut, postLoginRedirect } from '../auth.js';
 import { listOrders } from '../api.js';
 import { CONFIG } from '../config.js';
 import { isAdmin } from '../rbac.js';
@@ -29,6 +30,52 @@ function setHeaderIcons(){
   }
 }
 
+
+function wireAuthActions(){
+  const form = $('memberLoginForm');
+  if (form && !form.dataset.wired){
+    form.dataset.wired='1';
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email = String(new FormData(form).get('email')||'').trim();
+      if(!email) return;
+      const btn = form.querySelector('button[type="submit"]');
+      const old = btn?.textContent || '';
+      try{
+        if(btn){ btn.disabled = true; btn.textContent = 'Enviando...'; }
+        await signInWithEmail(email);
+        const mount = $('memberMount');
+        if(mount){
+          mount.insertAdjacentHTML('beforeend', '<section class="card" style="margin-top:12px;"><b>Link enviado ✅</b><div class="p">Confirme no seu e-mail e depois volte para continuar.</div></section>');
+        }
+      }catch(err){
+        alert(err?.message || 'Erro ao enviar link');
+      }finally{
+        if(btn){ btn.disabled = false; btn.textContent = old || 'Enviar link de acesso'; }
+      }
+    });
+  }
+  const logoutBtn = $('btnLogout');
+  if (logoutBtn && !logoutBtn.dataset.wired){
+    logoutBtn.dataset.wired='1';
+    logoutBtn.addEventListener('click', async ()=>{
+      try{ await signOut(); }catch(e){ console.warn(e); }
+      location.href = './member.html';
+    });
+  }
+}
+function syncCartBadge(){
+  const badge = $('cartCount') || document.querySelector('#btnCart .cartBadge');
+  if(!badge) return;
+  try{
+    const raw = localStorage.getItem('cs_cart_v1') || localStorage.getItem('cs_cart') || '[]';
+    const items = JSON.parse(raw);
+    const count = Array.isArray(items) ? items.reduce((n,i)=> n + Number(i.qty||1), 0) : 0;
+    badge.textContent = String(count);
+    badge.hidden = count <= 0;
+  }catch{}
+}
+
 function wireLocalUI(){
   const fab = $('fabBtn'); const fabMenu = $('fabMenu');
   const supp = $('fabSupport'); const grp = $('fabGroup');
@@ -57,10 +104,16 @@ function renderLoginBox(){
     <section class="card" style="margin-top:14px;">
       <b>Entrar para acessar sua área</b>
       <div class="p">Faça login para ver seus pedidos aprovados, histórico e links liberados.</div>
-      <div class="ctaRow" style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btn" href="./products.html">Ver planos</a>
-        <a class="btn primary" href="./checkout.html">Ir para checkout</a>
-      </div>
+      <form id="memberLoginForm" class="ctaRow" style="margin-top:12px; display:grid; gap:10px;">
+        <label for="memberEmail" class="label">Seu e-mail</label>
+        <input id="memberEmail" name="email" class="input" type="email" autocomplete="email" placeholder="voce@email.com" required />
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary" type="submit">Enviar link de acesso</button>
+          <a class="btn" href="./products.html">Ver planos</a>
+          <a class="btn" href="./checkout.html">Ir para checkout</a>
+        </div>
+      </form>
+      <div class="p" style="margin-top:8px; opacity:.8;">Você vai receber um link mágico no e-mail para entrar.</div>
     </section>`;
 }
 
@@ -144,12 +197,16 @@ async function boot(){
     initTheme();
     wireLocalUI();
     setHeaderIcons();
+    wireAuthActions();
+    syncCartBadge();
+    window.addEventListener('cs:cart-changed', syncCartBadge);
+    postLoginRedirect();
 
     const user = await getSessionUser();
     const adminBox = $('adminBox');
     if(adminBox && user) adminBox.style.display = (await isAdmin(user.id)) ? 'block' : 'none';
 
-    if(!user){ renderLoginBox(); return; }
+    if(!user){ renderLoginBox(); wireAuthActions(); return; }
 
     const [orders, approvals] = await Promise.all([
       listOrders().catch(e => { console.warn(e); return []; }),
