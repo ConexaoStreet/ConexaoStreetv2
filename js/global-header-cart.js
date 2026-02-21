@@ -3,7 +3,7 @@ import { getUser } from "./auth.js";
 import { isAdmin } from "./rbac.js";
 
 function ensureCartBtn(){
-  const right = document.querySelector('.head-actions');
+  const right = document.querySelector('.head-actions, .actions, .right');
   if(!right) return;
   let btn = document.getElementById('globalCartBtn');
   if(!btn){
@@ -25,9 +25,12 @@ function ensureCartBtn(){
 
 export async function enhanceHeader(){
   ensureCartBtn();
-  window.addEventListener('storage', (e)=>{ if(!e.key || e.key==='cs_cart' || e.key==='cs_cart_v1') ensureCartBtn(); });
-  window.addEventListener('cs:cart-changed', ensureCartBtn);
-  window.addEventListener('cs:cart', ensureCartBtn);
+  if(!window.__csCartHeaderBound){
+    window.__csCartHeaderBound = true;
+    window.addEventListener('storage', (e)=>{ if(!e.key || e.key==='cs_cart' || e.key==='cs_cart_v1') ensureCartBtn(); });
+    window.addEventListener('cs:cart-changed', ensureCartBtn);
+    window.addEventListener('cs:cart', ensureCartBtn);
+  }
 
   const menuAdmin = document.getElementById('miAdmin');
   const menuAdminP = document.getElementById('miAdminP');
@@ -46,12 +49,14 @@ export async function enhanceHeader(){
     const wa = href.includes('wa.me') ? href : 'https://wa.me/5583999999999';
     fab.setAttribute('href', wa);
     fab.setAttribute('target','_blank');
-    fab.setAttribute('rel','noopener');
+    fab.setAttribute('rel','noopener noreferrer');
     fab.style.pointerEvents = 'auto';
-    fab.addEventListener('click', (e)=>{ e.stopPropagation(); }, {passive:true});
+    if(!fab.dataset.boundHeaderFab){
+      fab.dataset.boundHeaderFab='1';
+      fab.addEventListener('click', (e)=>{ e.stopPropagation(); }, {passive:true});
+    }
   }
 }
-
 
 export function wireHeaderInteractions(){
   const btnMenu = document.getElementById('btnMenu');
