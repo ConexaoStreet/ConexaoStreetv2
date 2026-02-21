@@ -13,10 +13,12 @@ async function main(){
 
   const filter = $("type");
   const grid = $("grid");
+  if(!filter || !grid) return;
 
   async function load(){
     const t = filter.value || "";
-    const items = await listQuality({ limit: 60, type: t || null });
+    let items = [];
+    try{ items = await listQuality({ limit: 60, type: t || null }); }catch(e){ console.error(e); grid.innerHTML = `<div class="card"><b>Erro ao carregar galeria</b><div class="p">${esc(e?.message || "Tente novamente.")}</div></div>`; return; }
     grid.innerHTML = items.map(x => tile(x)).join("") || `<div class="card"><b>Sem posts ainda</b><div class="p">Quando publicar, vai aparecer aqui.</div></div>`;
     grid.querySelectorAll("[data-open]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
