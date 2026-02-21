@@ -25,8 +25,9 @@ function ensureCartBtn(){
 
 export async function enhanceHeader(){
   ensureCartBtn();
-  window.addEventListener('storage', (e)=>{ if(!e.key || e.key==='cs_cart') ensureCartBtn(); });
+  window.addEventListener('storage', (e)=>{ if(!e.key || e.key==='cs_cart' || e.key==='cs_cart_v1') ensureCartBtn(); });
   window.addEventListener('cs:cart-changed', ensureCartBtn);
+  window.addEventListener('cs:cart', ensureCartBtn);
 
   const menuAdmin = document.getElementById('miAdmin');
   const menuAdminP = document.getElementById('miAdminP');

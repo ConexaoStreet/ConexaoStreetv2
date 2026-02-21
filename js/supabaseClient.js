@@ -22,3 +22,17 @@ export async function getUser(){
   if(error) return null;
   return data.user || null;
 }
+
+
+// Compat layer (legacy modules)
+export const supabase = new Proxy({}, {
+  get(_t, prop){
+    const c = supa();
+    const v = c[prop];
+    return typeof v === "function" ? v.bind(c) : v;
+  }
+});
+
+export async function getSessionUser(){
+  return await getUser();
+}

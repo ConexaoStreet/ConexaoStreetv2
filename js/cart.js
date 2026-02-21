@@ -1,11 +1,15 @@
 const KEY = 'cs_cart_v1';
+const LEGACY_KEY = 'cs_cart';
 
 export function getCart(){
   try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; }
 }
 export function saveCart(items){
-  localStorage.setItem(KEY, JSON.stringify(items || []));
-  window.dispatchEvent(new CustomEvent('cs:cart')); 
+  const data = JSON.stringify(items || []);
+  localStorage.setItem(KEY, data);
+  try { localStorage.setItem(LEGACY_KEY, data); } catch {}
+  window.dispatchEvent(new CustomEvent('cs:cart'));
+  window.dispatchEvent(new CustomEvent('cs:cart-changed'));
 }
 export function cartCount(){
   return getCart().reduce((n,i)=> n + Number(i.qty || 1), 0);
@@ -26,3 +30,7 @@ export function removeFromCart(id){
   saveCart(getCart().filter(i => String(i.id)!==String(id)));
 }
 export function clearCart(){ saveCart([]); }
+
+
+// Compat alias (legacy header)
+export function getCount(){ return cartCount(); }

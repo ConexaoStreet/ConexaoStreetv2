@@ -43,3 +43,7 @@ export function postLoginRedirect(){
     window.location.href = url;
   }
 }
+
+
+// Compat re-export
+export { getUser } from "./supabaseClient.js";

@@ -128,3 +128,22 @@ export async function listApprovalsByUserKey(userKey){
   if(error) throw error;
   return data || [];
 }
+
+
+// Compat aliases for legacy pages
+export async function myApprovals(userKey){
+  return await listApprovalsByUserKey(userKey);
+}
+
+export async function listQuality(opts = {}){
+  const limit = Math.max(1, Number(opts.limit || 24));
+  let q = supabase.from('cs_quality_posts').select('*').order('created_at', { ascending:false }).limit(limit);
+  if (opts.type) q = q.eq('type', opts.type);
+  const { data, error } = await q;
+  if (error) {
+    const msg = String(error.message || '').toLowerCase();
+    if (msg.includes('relation') || String(error.code || '') === '42P01') return [];
+    throw error;
+  }
+  return data || [];
+}
