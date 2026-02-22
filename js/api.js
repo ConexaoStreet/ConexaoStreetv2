@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient.js';
 
-function mapOrderRow(r={}){
+function mapOrderRow(r = {}){
   return {
     id: r.id,
     created_at: r.created_at,
@@ -9,7 +9,7 @@ function mapOrderRow(r={}){
     buyer_phone: r.buyer_phone || '',
     product_id: r.product_id || '',
     product_name: r.product_name || '',
-    amount: Number(r.amount ?? (r.amount_cents ? r.amount_cents/100 : 0)) || 0,
+    amount: Number(r.amount ?? (r.amount_cents ? r.amount_cents / 100 : 0)) || 0,
     amount_cents: Number(r.amount_cents ?? 0) || 0,
     currency: r.currency || 'BRL',
     payment_status: r.payment_status || r.status || 'PENDENTE',
@@ -30,19 +30,44 @@ export async function listOrders(){
     .from('cs_orders')
     .select('*')
     .order('created_at', { ascending:false });
-  if(error) throw error;
+
+  if (error) throw error;
   return (data || []).map(mapOrderRow);
 }
 
 export async function createOrder(payload){
+  const toNum = (v) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const toCents = (v) => Math.round(toNum(v) * 100);
+
+  const amountValue =
+    payload?.amount != null && payload?.amount !== ''
+      ? toNum(payload.amount)
+      : (
+          payload?.amount_cents != null && payload?.amount_cents !== ''
+            ? toNum(payload.amount_cents) / 100
+            : 0
+        );
+
+  const amountCentsValue =
+    payload?.amount_cents != null && payload?.amount_cents !== ''
+      ? Math.round(toNum(payload.amount_cents))
+      : toCents(amountValue);
+
   const clean = {
     buyer_name: payload?.buyer_name || null,
     buyer_email: payload?.buyer_email || null,
     buyer_phone: payload?.buyer_phone || null,
     product_id: payload?.product_id || null,
     product_name: payload?.product_name || null,
-    amount: payload?.amount ?? null,
-    amount_cents: payload?.amount_cents ?? null,
+
+    // ✅ Normalizados para evitar null em coluna NOT NULL
+    amount: amountValue,
+    amount_cents: amountCentsValue,
+
     currency: payload?.currency || 'BRL',
     payment_status: payload?.payment_status || 'PENDENTE',
     order_status: payload?.order_status || 'CRIADO',
@@ -53,12 +78,18 @@ export async function createOrder(payload){
     raw: payload?.raw || {},
     user_id: payload?.user_id || null,
   };
-  const { data, error } = await supabase.from('cs_orders').insert(clean).select('*').single();
-  if(error) throw error;
+
+  const { data, error } = await supabase
+    .from('cs_orders')
+    .insert(clean)
+    .select('*')
+    .single();
+
+  if (error) throw error;
   return mapOrderRow(data);
 }
 
-export async function markOrderPaid(orderId, { provider_ref='', note='' } = {}){
+export async function markOrderPaid(orderId, { provider_ref = '', note = '' } = {}){
   const patch = {
     payment_status: 'PAGO',
     status: 'paid',
@@ -66,23 +97,26 @@ export async function markOrderPaid(orderId, { provider_ref='', note='' } = {}){
     note: note || null,
     paid_at: new Date().toISOString(),
   };
+
   const { data, error } = await supabase
     .from('cs_orders')
     .update(patch)
     .eq('id', orderId)
     .select('*')
     .single();
-  if(error) throw error;
+
+  if (error) throw error;
   return mapOrderRow(data);
 }
 
-export async function approveOrder(orderId, note=''){
+export async function approveOrder(orderId, note = ''){
   const { data: order, error: e1 } = await supabase
     .from('cs_orders')
     .select('*')
     .eq('id', orderId)
     .single();
-  if(e1) throw e1;
+
+  if (e1) throw e1;
 
   const userKey = order.user_id || order.buyer_email || order.buyer_phone || null;
   const up = {
@@ -96,39 +130,61 @@ export async function approveOrder(orderId, note=''){
     buyer_email: order.buyer_email || null,
   };
 
-  const { error: e2 } = await supabase.from('cs_approvals').upsert(up, { onConflict: 'order_id' });
-  if(e2) throw e2;
+  const { error: e2 } = await supabase
+    .from('cs_approvals')
+    .upsert(up, { onConflict: 'order_id' });
+
+  if (e2) throw e2;
 
   const { data, error: e3 } = await supabase
     .from('cs_orders')
-    .update({ order_status:'APROVADO', approved_at: up.approved_at, note: note || order.note || null })
+    .update({
+      order_status: 'APROVADO',
+      approved_at: up.approved_at,
+      note: note || order.note || null
+    })
     .eq('id', orderId)
     .select('*')
     .single();
-  if(e3) throw e3;
+
+  if (e3) throw e3;
   return mapOrderRow(data);
 }
 
-export async function revokeApproval(orderId, note=''){
-  const { error: e1 } = await supabase.from('cs_approvals').delete().eq('order_id', orderId);
-  if(e1) throw e1;
+export async function revokeApproval(orderId, note = ''){
+  const { error: e1 } = await supabase
+    .from('cs_approvals')
+    .delete()
+    .eq('order_id', orderId);
+
+  if (e1) throw e1;
+
   const { data, error: e2 } = await supabase
     .from('cs_orders')
-    .update({ order_status:'PENDENTE_APROVACAO', note: note || null, approved_at: null })
+    .update({
+      order_status:'PENDENTE_APROVACAO',
+      note: note || null,
+      approved_at: null
+    })
     .eq('id', orderId)
     .select('*')
     .single();
-  if(e2) throw e2;
+
+  if (e2) throw e2;
   return mapOrderRow(data);
 }
 
 export async function listApprovalsByUserKey(userKey){
-  if(!userKey) return [];
-  const { data, error } = await supabase.from('cs_approvals').select('*').eq('user_key', String(userKey));
-  if(error) throw error;
+  if (!userKey) return [];
+
+  const { data, error } = await supabase
+    .from('cs_approvals')
+    .select('*')
+    .eq('user_key', String(userKey));
+
+  if (error) throw error;
   return data || [];
 }
-
 
 // Compat aliases for legacy pages
 export async function myApprovals(userKey){
@@ -137,13 +193,22 @@ export async function myApprovals(userKey){
 
 export async function listQuality(opts = {}){
   const limit = Math.max(1, Number(opts.limit || 24));
-  let q = supabase.from('cs_quality_posts').select('*').order('created_at', { ascending:false }).limit(limit);
+
+  let q = supabase
+    .from('cs_quality_posts')
+    .select('*')
+    .order('created_at', { ascending:false })
+    .limit(limit);
+
   if (opts.type) q = q.eq('type', opts.type);
+
   const { data, error } = await q;
+
   if (error) {
     const msg = String(error.message || '').toLowerCase();
     if (msg.includes('relation') || String(error.code || '') === '42P01') return [];
     throw error;
   }
+
   return data || [];
 }
