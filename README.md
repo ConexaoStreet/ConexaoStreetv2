@@ -27,10 +27,6 @@ index.html   página inicial
 
 Como o projeto é majoritariamente estático, você pode abrir `index.html` diretamente no navegador ou usar um servidor local.
 
-## Organização do GitHub
-
-O índice geral dos repositórios desta conta está em [docs/REPOSITORIES.md](docs/REPOSITORIES.md).
-
 ---
 
-**Última atividade registrada:** 22/02/2026
+**Status:** projeto preservado para manutenção e evolução.
